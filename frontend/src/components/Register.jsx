@@ -12,8 +12,9 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    image: "",
   });
+
+  const [imageFile, setImageFile] = useState();
 
   const [loadImage, setLoadImage] = useState("");
 
@@ -27,12 +28,9 @@ const Register = () => {
 
   const fileHandler = (e) => {
     const { name, files } = e.target;
-    if (files.length !== 0) {
-      setState({
-        ...state,
-        [name]: files[0],
-      });
-    }
+    console.log(name, files);
+    setImageFile(files[0]);
+    console.log(imageFile);
 
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
@@ -42,9 +40,9 @@ const Register = () => {
   };
 
   const register = (e) => {
-    const { userName, email, password, confirmPassword, image } = state;
-
     e.preventDefault();
+    const { userName, email, password, confirmPassword } = state;
+    const image = imageFile;
 
     const formData = new FormData();
     formData.append("userName", userName);
@@ -63,7 +61,7 @@ const Register = () => {
           <h3>Register</h3>
         </div>
         <div className="card-body">
-          <form onSubmit={register}>
+          <form onSubmit={register} encType="multipart/form-data">
             <div className="form-group">
               <label htmlFor="username">User Name</label>
               <input

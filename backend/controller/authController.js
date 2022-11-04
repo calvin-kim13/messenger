@@ -26,7 +26,21 @@ module.exports.userRegister = (req, res) => {
     if (password && confirmPassword && password !== confirmPassword) {
       error.push("Passwords do not match");
     }
+    if (password && password.length < 6) {
+      error.push("Password must be at least 6 characters");
+    }
+    if (Object.keys(files).length === 0) {
+      error.push("Please provide a profile image");
+    }
+    if (error.length > 0) {
+      res.status(400).json({
+        error: {
+          errorMessage: error,
+        },
+      });
+    } else {
+      const getImageName = files.image.originalFilename;
+      console.log(getImageName);
+    }
   });
-
-  console.log("register working");
 };
